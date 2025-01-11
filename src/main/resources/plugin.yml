@@ -1,0 +1,5 @@
+name: SkyWarsV1
+version: '${version}'
+main: org.example.da.skywarsv1.SkyWarsV1
+api-version: 1.12.2
+authors: [ kasperML ]

@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="SkyWarsV1:jar">
+    <output-path>$USER_HOME$/Desktop/serv/plugins</output-path>
+    <root id="archive" name="SkyWarsV1.jar">
+      <element id="module-output" name="SkyWarsV1.main" />
+      <element id="module-source" name="SkyWarsV1.main" />
+    </root>
+  </artifact>
+</component>
