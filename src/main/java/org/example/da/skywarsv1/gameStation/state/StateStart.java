@@ -1,17 +1,15 @@
 package org.example.da.skywarsv1.gameStation.state;
 
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.example.da.skywarsv1.gameStation.GameStage;
+import org.example.da.skywarsv1.gameStation.GameState;
 import org.example.da.skywarsv1.gameStation.GameStateManager;
 import org.example.da.skywarsv1.mapSetting.MapLocation;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -26,7 +24,7 @@ public class StateStart {
         gameStateStart();
     }
     private void gameStateStart(){
-        if(gameStateManager.getGameStage() != GameStage.START) return;
+        if(gameStateManager.getGameState() != GameState.START) return;
         new BukkitRunnable() {
             int countdown = 10;
             boolean fastTimer = false;
@@ -38,14 +36,13 @@ public class StateStart {
                     return;
                 }
                 if(onlinePlayersCount < gameStateManager.getMinPlayer()){
-                    gameStateManager.setState(GameStage.LOBBY);
+                    gameStateManager.setState(GameState.LOBBY);
                     this.cancel();
                     return;
                 }
                 if(countdown == 0){
                     teleportInLocationPlayer();
-                    playerSetting();
-                    gameStateManager.setState(GameStage.GAME);
+                    gameStateManager.setState(GameState.GAME);
                     this.cancel();
                     return;
                 }
@@ -67,11 +64,5 @@ public class StateStart {
         players.forEach(player -> {
             player.teleport(mapLocations.get(players.indexOf(player)));
         });
-    }
-    private void playerSetting(){
-        for(Player player : Bukkit.getOnlinePlayers()){
-            player.setGameMode(GameMode.SURVIVAL);
-            player.setHealth(20);
-        }
     }
 }

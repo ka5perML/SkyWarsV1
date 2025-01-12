@@ -1,6 +1,6 @@
 package org.example.da.skywarsv1.gameStation;
 
-public enum GameStage {
+public enum GameState {
     LOBBY,
     START,
     GAME,

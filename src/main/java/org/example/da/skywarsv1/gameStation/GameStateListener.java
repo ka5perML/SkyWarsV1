@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.example.da.skywarsv1.mapSetting.MapLocation;
 
@@ -20,12 +21,19 @@ public class GameStateListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        if (gameStateManager.getGameStage() == GameStage.LOBBY) {
+        if (gameStateManager.getGameState() == GameState.LOBBY) {
+            gameStateManager.playerSetting();
             event.getPlayer().teleport(mapLocations.get(0));
             event.getPlayer().sendMessage("Игра еще не началась.");
-        } else if (gameStateManager.getGameStage() == GameStage.GAME) {
-            event.getPlayer().sendMessage("Вы наблюдатель.");
-            event.getPlayer().setGameMode(GameMode.SPECTATOR);
+            return;
         }
+        event.getPlayer().sendMessage("Вы наблюдатель.");
+        event.getPlayer().setGameMode(GameMode.SPECTATOR);
+    }
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent e){
+        if(gameStateManager.getGameState() != GameState.GAME) return;
+        Player player = e.getEntity().getPlayer();
+        player.setGameMode(GameMode.SPECTATOR);
     }
 }

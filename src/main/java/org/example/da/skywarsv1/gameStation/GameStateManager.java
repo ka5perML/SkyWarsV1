@@ -3,8 +3,11 @@ package org.example.da.skywarsv1.gameStation;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.example.da.skywarsv1.chestManager.ChestManager;
+import org.example.da.skywarsv1.gameStation.state.StateGame;
 import org.example.da.skywarsv1.gameStation.state.StateLobby;
 import org.example.da.skywarsv1.gameStation.state.StateStart;
 
@@ -17,25 +20,29 @@ public class GameStateManager {
     private final int minPlayer = 2;
     private StateLobby stateLobby;
     private StateStart stateStart;
+    private StateGame stateGame;
     @Getter
     @Setter
     private ArrayList<Player> playerList = new ArrayList<>();
     @Getter
-    private GameStage gameStage;
+    private GameState gameState;
+    private ChestManager chestManager;
     public GameStateManager(JavaPlugin plugin){
-        this.gameStage = GameStage.LOBBY;
+        this.gameState = GameState.LOBBY;
         this.stateLobby = new StateLobby(plugin,this);
         this.stateStart = new StateStart(plugin,this);
-        stageChange(gameStage);
+        this.stateGame = new StateGame(plugin,this);
+        this.chestManager = new ChestManager(plugin);
+        stateChange(gameState);
     }
-    public void setState(GameStage stage) {
-        this.gameStage = stage;
-        Bukkit.broadcastMessage("Стадия " + stage.name());
-        stageChange(stage);
+    public void setState(GameState state) {
+        this.gameState = state;
+        Bukkit.broadcastMessage("Стадия " + state.name());
+        stateChange(state);
     }
 
-    private void stageChange(GameStage gameStage){
-        switch (gameStage){
+    private void stateChange(GameState gameStage){
+        switch (gameState){
             case LOBBY:
                 stateLobby.checkPlayerInGame();
                 break;
@@ -44,6 +51,8 @@ public class GameStateManager {
                 startCountdown();
                 break;
             case GAME:
+                chestManager.startChestSystem();
+                stateGame.game();
                 startGame();
                 break;
             case END:
@@ -63,5 +72,11 @@ public class GameStateManager {
 
     private void endGame() {
         Bukkit.broadcastMessage("Игра завершена!");
+    }
+    public void playerSetting(){
+        for(Player player : Bukkit.getOnlinePlayers()){
+            player.setGameMode(GameMode.SURVIVAL);
+            player.setHealth(20);
+        }
     }
 }

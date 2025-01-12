@@ -6,7 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.example.da.skywarsv1.gameStation.GameStage;
+import org.example.da.skywarsv1.gameStation.GameState;
 import org.example.da.skywarsv1.gameStation.GameStateManager;
 import org.example.da.skywarsv1.mapSetting.MapLocation;
 
@@ -21,16 +21,15 @@ public class StateLobby {
         this.gameStateManager = gameStateManager;
     }
     public void checkPlayerInGame(){
-        if(gameStateManager.getGameStage() != GameStage.LOBBY) return;
+        if(gameStateManager.getGameState() != GameState.LOBBY) return;
         teleportInLocationSpawn();
         new BukkitRunnable() {
             int ticks = 0;
             @Override
             public void run() {
-                playerSetting();
                 int onlinePlayersCount = Bukkit.getOnlinePlayers().size();
                 if(onlinePlayersCount >= gameStateManager.getMinPlayer()){
-                    gameStateManager.setState(GameStage.START);
+                    gameStateManager.setState(GameState.START);
                     this.cancel();
                 }
                 if(ticks % 20 == 0) Bukkit.broadcastMessage("Еще " + (gameStateManager.getMinPlayer() - onlinePlayersCount) + " игрок.");
@@ -44,11 +43,5 @@ public class StateLobby {
         players.forEach(player -> {
             player.teleport(mapLocations.get(0));
         });
-    }
-    private void playerSetting(){
-        for(Player player : Bukkit.getOnlinePlayers()){
-            player.setGameMode(GameMode.SURVIVAL);
-            player.setHealth(20);
-        }
     }
 }
