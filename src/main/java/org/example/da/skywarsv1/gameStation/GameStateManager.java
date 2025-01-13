@@ -7,6 +7,7 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.example.da.skywarsv1.chestManager.ChestManager;
+import org.example.da.skywarsv1.gameStation.state.StateEnd;
 import org.example.da.skywarsv1.gameStation.state.StateGame;
 import org.example.da.skywarsv1.gameStation.state.StateLobby;
 import org.example.da.skywarsv1.gameStation.state.StateStart;
@@ -21,6 +22,7 @@ public class GameStateManager {
     private StateLobby stateLobby;
     private StateStart stateStart;
     private StateGame stateGame;
+    private StateEnd stateEnd;
     @Getter
     @Setter
     private ArrayList<Player> playerList = new ArrayList<>();
@@ -29,6 +31,7 @@ public class GameStateManager {
     private ChestManager chestManager;
     public GameStateManager(JavaPlugin plugin){
         this.gameState = GameState.LOBBY;
+        this.stateEnd = new StateEnd(this);
         this.stateLobby = new StateLobby(plugin,this);
         this.stateStart = new StateStart(plugin,this);
         this.stateGame = new StateGame(plugin,this);
@@ -56,6 +59,7 @@ public class GameStateManager {
                 startGame();
                 break;
             case END:
+                stateEnd.endGame();
                 endGame();
                 break;
 

@@ -2,7 +2,6 @@ package org.example.da.skywarsv1.gameStation;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -15,6 +14,7 @@ import java.util.List;
 public class GameStateListener implements Listener {
     private final GameStateManager gameStateManager;
     private List<Location> mapLocations = new ArrayList<>(MapLocation.SPAWN.getLocations());
+
     public GameStateListener(GameStateManager gameStateManager) {
         this.gameStateManager = gameStateManager;
     }
@@ -30,10 +30,12 @@ public class GameStateListener implements Listener {
         event.getPlayer().sendMessage("Вы наблюдатель.");
         event.getPlayer().setGameMode(GameMode.SPECTATOR);
     }
+
     @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent e){
-        if(gameStateManager.getGameState() != GameState.GAME) return;
-        Player player = e.getEntity().getPlayer();
-        player.setGameMode(GameMode.SPECTATOR);
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        if (gameStateManager.getGameState() == GameState.GAME) {
+            event.getEntity().spigot().respawn();
+            event.getEntity().setGameMode(GameMode.SPECTATOR);
+        }
     }
 }

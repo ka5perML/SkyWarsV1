@@ -12,12 +12,15 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.example.da.skywarsv1.gameStation.GameState;
 import org.example.da.skywarsv1.gameStation.GameStateManager;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class StateGame {
     private JavaPlugin plugin;
     private GameStateManager gameStateManager;
+    private boolean stopTimer = false;
     public StateGame(JavaPlugin plugin, GameStateManager gameStateManager){
         this.plugin = plugin;
         this.gameStateManager = gameStateManager;
@@ -35,7 +38,8 @@ public class StateGame {
                 List<Player> survivalPlayers = Bukkit.getOnlinePlayers().stream()
                         .filter(player -> player.getGameMode() == GameMode.SURVIVAL)
                         .collect(Collectors.toList());
-                if(survivalPlayers.size() >= 1){
+                if(survivalPlayers.size() <= 1){
+                    stopTimer = true;
                     gameStateManager.setState(GameState.END);
                     this.cancel();
                 }
@@ -44,28 +48,17 @@ public class StateGame {
         }.runTaskTimer(plugin,0,20);
     }
     private void startBossBarTimer() {
-        BossBar bossBar = Bukkit.createBossBar("Таймер: 60 секунд", BarColor.GREEN, BarStyle.SOLID);
+        BossBar bossBar = Bukkit.createBossBar("Таймер: 180 секунд", BarColor.GREEN, BarStyle.SOLID);
 
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            bossBar.addPlayer(player);
-        });
+        Bukkit.getOnlinePlayers().forEach(bossBar::addPlayer);
 
         new BukkitRunnable() {
-            int timeLeft = 180; // Начинаем с 60 секунд
+            int timeLeft = 180;
 
             @Override
             public void run() {
-                if (timeLeft <= 0 || gameStateManager.getGameState() != GameState.GAME) {
-                    Bukkit.getOnlinePlayers().forEach(player -> {
-                        bossBar.removePlayer(player);
-                    });
-                    this.cancel();
-                }
-                if (timeLeft <= 0 && gameStateManager.getGameState() == GameState.GAME) {
-                    Bukkit.getOnlinePlayers().forEach(player -> {
-                        bossBar.removePlayer(player);
-                    });
-                    gameStateManager.setState(GameState.END);
+                if (stopTimer) {
+                    Bukkit.getOnlinePlayers().forEach(bossBar::removePlayer);
                     this.cancel();
                 }
                 bossBar.setTitle("Таймер: " + timeLeft + " секунд");
