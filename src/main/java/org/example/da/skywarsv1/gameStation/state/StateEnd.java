@@ -6,7 +6,6 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.example.da.skywarsv1.gameStation.GameState;
 import org.example.da.skywarsv1.gameStation.GameStateManager;
-import org.example.da.skywarsv1.mapSetting.MapLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,14 +26,14 @@ public class StateEnd {
         playerList.forEach(player -> {
             player.setHealth(20);
             player.setGameMode(GameMode.SURVIVAL);
-            player.teleport(MapLocation.SPAWN.getLocations().get(0));
         });
         Thread.sleep(5000);
-        gameStateManager.setState(GameState.LOBBY);
+        Bukkit.reload();
     }
     private void messageWinner(){
         List<Player> playerList = Bukkit.getOnlinePlayers().stream()
-                .filter(player -> player.getGameMode() == GameMode.SURVIVAL).collect(Collectors.toList());
-        Bukkit.broadcastMessage("Победитель " + playerList.get(0).getDisplayName());
+                .filter(player -> player.getGameMode() == GameMode.SURVIVAL)
+                .collect(Collectors.toList());
+        Bukkit.broadcastMessage("Победитель " + playerList.stream().toList());
     }
 }

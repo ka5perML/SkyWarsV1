@@ -6,13 +6,14 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.example.da.skywarsv1.mapSetting.MapLoad;
 
 public class ChestManager {
-    private CheckIdentification chectIdentificator;
     private ChestLoot chestLoot;
     private JavaPlugin plugin;
-    public ChestManager(JavaPlugin plugin){
-        chectIdentificator = new CheckIdentification();
+    private MapLoad mapLoad;
+    public ChestManager(JavaPlugin plugin, MapLoad mapLoad){
+        this.mapLoad = mapLoad;
         chestLoot = new ChestLoot();
         this.plugin = plugin;
     }
@@ -20,16 +21,16 @@ public class ChestManager {
         new BukkitRunnable(){
             @Override
             public void run() {
-                chect();
+                chest();
             }
         }.runTaskTimer(plugin,0, 200);
     }
-    private void chect(){
-        for (Location loc : chectIdentificator.getIslandChest()) {
+    private void chest(){
+        for (Location loc : mapLoad.getLocationIslandChestList()) {
             spawnChest(loc, false);
         }
 
-        for (Location loc : chectIdentificator.getMidChest()) {
+        for (Location loc : mapLoad.getLocationMidChestList()) {
             spawnChest(loc, true);
         }
     }

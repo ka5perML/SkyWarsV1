@@ -6,13 +6,16 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.example.da.skywarsv1.gameStation.GameStateListener;
 import org.example.da.skywarsv1.gameStation.GameStateManager;
+import org.example.da.skywarsv1.mapSetting.MapLoad;
 
 public final class SkyWarsV1 extends JavaPlugin {
     private GameStateManager stageManager;
+    private MapLoad mapLoad;
 
     @Override
     public void onEnable() {
-        stageManager = new GameStateManager(this);
+        this.mapLoad = new MapLoad(this);
+        this.stageManager = new GameStateManager(this, mapLoad);
 
         registerListener(
                 new GameStateListener(stageManager)

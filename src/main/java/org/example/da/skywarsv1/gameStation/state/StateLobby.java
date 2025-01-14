@@ -1,14 +1,12 @@
 package org.example.da.skywarsv1.gameStation.state;
 
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.example.da.skywarsv1.gameStation.GameState;
 import org.example.da.skywarsv1.gameStation.GameStateManager;
-import org.example.da.skywarsv1.mapSetting.MapLocation;
+import org.example.da.skywarsv1.mapSetting.Spawn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +14,12 @@ import java.util.List;
 public class StateLobby {
     private JavaPlugin plugin;
     private GameStateManager gameStateManager;
+    private Spawn spawn;
     public StateLobby(JavaPlugin plugin, GameStateManager gameStateManager){
         this.plugin = plugin;
+        this.spawn = new Spawn();
         this.gameStateManager = gameStateManager;
+
     }
     public void checkPlayerInGame(){
         if(gameStateManager.getGameState() != GameState.LOBBY) return;
@@ -39,9 +40,8 @@ public class StateLobby {
     }
     private void teleportInLocationSpawn(){
         List<Player> players = new ArrayList<>(Bukkit.getOnlinePlayers());
-        List<Location> mapLocations = new ArrayList<>(MapLocation.SPAWN.getLocations());
         players.forEach(player -> {
-            player.teleport(mapLocations.get(0));
+            spawn.teleportPlayerInSpawn(player);
         });
     }
 }

@@ -1,7 +1,6 @@
 package org.example.da.skywarsv1.gameStation.state;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -12,8 +11,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.example.da.skywarsv1.gameStation.GameState;
 import org.example.da.skywarsv1.gameStation.GameStateManager;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +18,7 @@ public class StateGame {
     private JavaPlugin plugin;
     private GameStateManager gameStateManager;
     private boolean stopTimer = false;
+    private boolean timerEnd = false;
     public StateGame(JavaPlugin plugin, GameStateManager gameStateManager){
         this.plugin = plugin;
         this.gameStateManager = gameStateManager;
@@ -43,6 +41,9 @@ public class StateGame {
                     gameStateManager.setState(GameState.END);
                     this.cancel();
                 }
+                if(timerEnd){
+                    this.cancel();
+                }
                 timer++;
             }
         }.runTaskTimer(plugin,0,20);
@@ -59,6 +60,12 @@ public class StateGame {
             public void run() {
                 if (stopTimer) {
                     Bukkit.getOnlinePlayers().forEach(bossBar::removePlayer);
+                    this.cancel();
+                }
+                if(timeLeft == 0){
+                    timerEnd = true;
+                    Bukkit.getOnlinePlayers().forEach(bossBar::removePlayer);
+                    gameStateManager.setState(GameState.END);
                     this.cancel();
                 }
                 bossBar.setTitle("Таймер: " + timeLeft + " секунд");

@@ -11,6 +11,7 @@ import org.example.da.skywarsv1.gameStation.state.StateEnd;
 import org.example.da.skywarsv1.gameStation.state.StateGame;
 import org.example.da.skywarsv1.gameStation.state.StateLobby;
 import org.example.da.skywarsv1.gameStation.state.StateStart;
+import org.example.da.skywarsv1.mapSetting.MapLoad;
 
 import java.util.ArrayList;
 
@@ -29,13 +30,13 @@ public class GameStateManager {
     @Getter
     private GameState gameState;
     private ChestManager chestManager;
-    public GameStateManager(JavaPlugin plugin){
+    public GameStateManager(JavaPlugin plugin, MapLoad mapLoad){
         this.gameState = GameState.LOBBY;
         this.stateEnd = new StateEnd(this);
         this.stateLobby = new StateLobby(plugin,this);
-        this.stateStart = new StateStart(plugin,this);
+        this.stateStart = new StateStart(plugin,this, mapLoad);
         this.stateGame = new StateGame(plugin,this);
-        this.chestManager = new ChestManager(plugin);
+        this.chestManager = new ChestManager(plugin, mapLoad);
         stateChange(gameState);
     }
     public void setState(GameState state) {

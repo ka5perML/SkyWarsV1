@@ -1,29 +1,26 @@
 package org.example.da.skywarsv1.gameStation;
 
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.example.da.skywarsv1.mapSetting.MapLocation;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.example.da.skywarsv1.mapSetting.Spawn;
 
 public class GameStateListener implements Listener {
     private final GameStateManager gameStateManager;
-    private List<Location> mapLocations = new ArrayList<>(MapLocation.SPAWN.getLocations());
+    private Spawn spawn;
 
     public GameStateListener(GameStateManager gameStateManager) {
         this.gameStateManager = gameStateManager;
+        this.spawn = new Spawn();
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (gameStateManager.getGameState() == GameState.LOBBY) {
             gameStateManager.playerSetting();
-            event.getPlayer().teleport(mapLocations.get(0));
+            spawn.teleportPlayerInSpawn(event.getPlayer());
             event.getPlayer().sendMessage("Игра еще не началась.");
             return;
         }

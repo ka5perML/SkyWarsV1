@@ -1,5 +1,5 @@
 name: SkyWarsV1
-version: 1.0
+version: 1.1
 main: org.example.da.skywarsv1.SkyWarsV1
 api-version: 1.12.2
 authors: [ kasperML ]
