@@ -1,5 +1,6 @@
 package org.example.da.skywarsv1.chestManager;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -22,8 +23,9 @@ public class ChestManager {
             @Override
             public void run() {
                 chest();
+                Bukkit.broadcastMessage("Chest update");
             }
-        }.runTaskTimer(plugin,0, 200);
+        }.runTaskTimer(plugin,0, 600);
     }
     private void chest(){
         for (Location loc : mapLoad.getLocationIslandChestList()) {

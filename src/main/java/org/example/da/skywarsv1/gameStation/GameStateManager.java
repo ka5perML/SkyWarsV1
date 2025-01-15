@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.example.da.skywarsv1.chestManager.ChestManager;
@@ -11,7 +12,10 @@ import org.example.da.skywarsv1.gameStation.state.StateEnd;
 import org.example.da.skywarsv1.gameStation.state.StateGame;
 import org.example.da.skywarsv1.gameStation.state.StateLobby;
 import org.example.da.skywarsv1.gameStation.state.StateStart;
+import org.example.da.skywarsv1.mapSetting.BlockChange;
 import org.example.da.skywarsv1.mapSetting.MapLoad;
+import org.example.da.skywarsv1.mapSetting.PlayerTeleport;
+import org.example.da.skywarsv1.playerSetting.PlayerSetting;
 
 import java.util.ArrayList;
 
@@ -25,18 +29,21 @@ public class GameStateManager {
     private StateGame stateGame;
     private StateEnd stateEnd;
     @Getter
-    @Setter
-    private ArrayList<Player> playerList = new ArrayList<>();
-    @Getter
     private GameState gameState;
     private ChestManager chestManager;
-    public GameStateManager(JavaPlugin plugin, MapLoad mapLoad){
+    private PlayerTeleport teleport;
+    private BlockChange blockChange;
+    private MapLoad mapLoad;
+    public GameStateManager(JavaPlugin plugin, MapLoad mapLoad, PlayerTeleport teleport, PlayerSetting playerSetting){
+        this.mapLoad = mapLoad;
         this.gameState = GameState.LOBBY;
+        this.teleport = teleport;
         this.stateEnd = new StateEnd(this);
-        this.stateLobby = new StateLobby(plugin,this);
-        this.stateStart = new StateStart(plugin,this, mapLoad);
+        this.stateLobby = new StateLobby(plugin,this, mapLoad, playerSetting);
+        this.stateStart = new StateStart(plugin,this, mapLoad, teleport);
         this.stateGame = new StateGame(plugin,this);
         this.chestManager = new ChestManager(plugin, mapLoad);
+        this.blockChange = new BlockChange();
         stateChange(gameState);
     }
     public void setState(GameState state) {
@@ -77,11 +84,5 @@ public class GameStateManager {
 
     private void endGame() {
         Bukkit.broadcastMessage("Игра завершена!");
-    }
-    public void playerSetting(){
-        for(Player player : Bukkit.getOnlinePlayers()){
-            player.setGameMode(GameMode.SURVIVAL);
-            player.setHealth(20);
-        }
     }
 }

@@ -8,6 +8,7 @@ import org.example.da.skywarsv1.gameStation.GameState;
 import org.example.da.skywarsv1.gameStation.GameStateManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +35,6 @@ public class StateEnd {
         List<Player> playerList = Bukkit.getOnlinePlayers().stream()
                 .filter(player -> player.getGameMode() == GameMode.SURVIVAL)
                 .collect(Collectors.toList());
-        Bukkit.broadcastMessage("Победитель " + playerList.stream().toList());
+        Bukkit.broadcastMessage("Победитель " + playerList);
     }
 }

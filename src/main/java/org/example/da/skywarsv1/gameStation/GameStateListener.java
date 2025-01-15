@@ -5,34 +5,39 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.example.da.skywarsv1.mapSetting.Spawn;
+import org.example.da.skywarsv1.mapSetting.MapLoad;
+import org.example.da.skywarsv1.mapSetting.PlayerTeleport;
 
 public class GameStateListener implements Listener {
     private final GameStateManager gameStateManager;
-    private Spawn spawn;
+    private MapLoad mapLoad;
+    private PlayerTeleport teleport;
 
-    public GameStateListener(GameStateManager gameStateManager) {
+    public GameStateListener(GameStateManager gameStateManager, MapLoad mapLoad, PlayerTeleport teleport) {
         this.gameStateManager = gameStateManager;
-        this.spawn = new Spawn();
+        this.mapLoad = mapLoad;
+        this.teleport = teleport;
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (gameStateManager.getGameState() == GameState.LOBBY) {
-            gameStateManager.playerSetting();
-            spawn.teleportPlayerInSpawn(event.getPlayer());
+            event.getPlayer().teleport(mapLoad.getLocationSpawn().get(0));
             event.getPlayer().sendMessage("Игра еще не началась.");
-            return;
+        }else if (gameStateManager.getGameState() == GameState.START){
+            teleport.teleportCleanLocation(event.getPlayer());
+        }else {
+            event.getPlayer().sendMessage("Вы наблюдатель.");
+            event.getPlayer().setGameMode(GameMode.SPECTATOR);
         }
-        event.getPlayer().sendMessage("Вы наблюдатель.");
-        event.getPlayer().setGameMode(GameMode.SPECTATOR);
     }
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         if (gameStateManager.getGameState() == GameState.GAME) {
             event.getEntity().spigot().respawn();
-            event.getEntity().setGameMode(GameMode.SPECTATOR);
+            event.getEntity().getPlayer().teleport(mapLoad.getLocationSpawn().get(0));
+            event.getEntity().getPlayer().setGameMode(GameMode.SPECTATOR);
         }
     }
 }
