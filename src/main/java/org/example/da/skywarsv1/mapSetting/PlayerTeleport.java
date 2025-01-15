@@ -1,11 +1,7 @@
 package org.example.da.skywarsv1.mapSetting;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-
-import static org.bukkit.Bukkit.getServer;
 
 public class PlayerTeleport {
     private MapLoad mapLoad;

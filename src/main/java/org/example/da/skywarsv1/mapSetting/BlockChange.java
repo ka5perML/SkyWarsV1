@@ -15,10 +15,14 @@ public class BlockChange {
             block.setType(Material.GLASS);
         }
     }
+    public void replaceBlockInAir(Location location){
+        Block block = getServer().getWorlds().get(0).getBlockAt(location);
+        block.setType(Material.AIR);
+    }
     public void breakBlockUnderPlayer() {
         Bukkit.getOnlinePlayers().forEach(player -> {
             Location playerLoc = player.getLocation();
-            Block blockUnderPlayer = playerLoc.clone().subtract(0, 2, 0).getBlock();
+            Block blockUnderPlayer = playerLoc.clone().subtract(0, 1, 0).getBlock();
 
             if (blockUnderPlayer.getType() != Material.AIR) {
 

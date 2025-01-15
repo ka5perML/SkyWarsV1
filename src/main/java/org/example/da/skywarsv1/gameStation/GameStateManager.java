@@ -15,6 +15,7 @@ import org.example.da.skywarsv1.gameStation.state.StateStart;
 import org.example.da.skywarsv1.mapSetting.BlockChange;
 import org.example.da.skywarsv1.mapSetting.MapLoad;
 import org.example.da.skywarsv1.mapSetting.PlayerTeleport;
+import org.example.da.skywarsv1.playerSetting.BlockBreakerForPlayer;
 import org.example.da.skywarsv1.playerSetting.PlayerSetting;
 
 import java.util.ArrayList;
@@ -34,16 +35,16 @@ public class GameStateManager {
     private PlayerTeleport teleport;
     private BlockChange blockChange;
     private MapLoad mapLoad;
-    public GameStateManager(JavaPlugin plugin, MapLoad mapLoad, PlayerTeleport teleport, PlayerSetting playerSetting){
+    public GameStateManager(JavaPlugin plugin, MapLoad mapLoad, PlayerTeleport teleport, PlayerSetting playerSetting, BlockBreakerForPlayer breaker){
         this.mapLoad = mapLoad;
         this.gameState = GameState.LOBBY;
         this.teleport = teleport;
-        this.stateEnd = new StateEnd(this);
+        this.blockChange = new BlockChange();
+        this.stateEnd = new StateEnd(this,blockChange,breaker);
         this.stateLobby = new StateLobby(plugin,this, mapLoad, playerSetting);
         this.stateStart = new StateStart(plugin,this, mapLoad, teleport);
         this.stateGame = new StateGame(plugin,this);
         this.chestManager = new ChestManager(plugin, mapLoad);
-        this.blockChange = new BlockChange();
         stateChange(gameState);
     }
     public void setState(GameState state) {

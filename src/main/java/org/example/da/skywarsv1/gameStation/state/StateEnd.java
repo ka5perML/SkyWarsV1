@@ -3,9 +3,12 @@ package org.example.da.skywarsv1.gameStation.state;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.example.da.skywarsv1.gameStation.GameState;
 import org.example.da.skywarsv1.gameStation.GameStateManager;
+import org.example.da.skywarsv1.mapSetting.BlockChange;
+import org.example.da.skywarsv1.playerSetting.BlockBreakerForPlayer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,8 +17,12 @@ import java.util.stream.Collectors;
 
 public class StateEnd {
     private GameStateManager gameStateManager;
-    public StateEnd(GameStateManager gameStateManager){
+    private BlockChange blockChange;
+    private BlockBreakerForPlayer breaker;
+    public StateEnd(GameStateManager gameStateManager, BlockChange blockChange, BlockBreakerForPlayer breaker){
         this.gameStateManager = gameStateManager;
+        this.blockChange = blockChange;
+        this.breaker = breaker;
     }
     public void endGame(){
         messageWinner();
@@ -23,17 +30,17 @@ public class StateEnd {
     }
     @SneakyThrows
     private void gameEnd(){
-        List<Player> playerList = new ArrayList<>(Bukkit.getOnlinePlayers());
-        playerList.forEach(player -> {
-            player.setHealth(20);
-            player.setGameMode(GameMode.SURVIVAL);
+        breaker.getPlayerPutBlock().forEach(location->{
+            blockChange.replaceBlockInAir(location);
         });
-        Thread.sleep(5000);
+        Thread.sleep(10000);
         Bukkit.reload();
     }
+    @SneakyThrows
     private void messageWinner(){
-        List<Player> playerList = Bukkit.getOnlinePlayers().stream()
+        List<String> playerList = Bukkit.getOnlinePlayers().stream()
                 .filter(player -> player.getGameMode() == GameMode.SURVIVAL)
+                .map(player -> player.getDisplayName())
                 .collect(Collectors.toList());
         Bukkit.broadcastMessage("Победитель " + playerList);
     }
