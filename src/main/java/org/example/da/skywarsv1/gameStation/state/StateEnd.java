@@ -3,15 +3,10 @@ package org.example.da.skywarsv1.gameStation.state;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.example.da.skywarsv1.gameStation.GameState;
 import org.example.da.skywarsv1.gameStation.GameStateManager;
 import org.example.da.skywarsv1.mapSetting.BlockChange;
 import org.example.da.skywarsv1.playerSetting.BlockBreakerForPlayer;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -1,11 +1,7 @@
 package org.example.da.skywarsv1.gameStation;
 
 import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.example.da.skywarsv1.chestManager.ChestManager;
 import org.example.da.skywarsv1.gameStation.state.StateEnd;
@@ -17,8 +13,6 @@ import org.example.da.skywarsv1.mapSetting.MapLoad;
 import org.example.da.skywarsv1.mapSetting.PlayerTeleport;
 import org.example.da.skywarsv1.playerSetting.BlockBreakerForPlayer;
 import org.example.da.skywarsv1.playerSetting.PlayerSetting;
-
-import java.util.ArrayList;
 
 public class GameStateManager {
     @Getter
@@ -34,9 +28,7 @@ public class GameStateManager {
     private ChestManager chestManager;
     private PlayerTeleport teleport;
     private BlockChange blockChange;
-    private MapLoad mapLoad;
     public GameStateManager(JavaPlugin plugin, MapLoad mapLoad, PlayerTeleport teleport, PlayerSetting playerSetting, BlockBreakerForPlayer breaker){
-        this.mapLoad = mapLoad;
         this.gameState = GameState.LOBBY;
         this.teleport = teleport;
         this.blockChange = new BlockChange();

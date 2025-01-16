@@ -1,7 +1,6 @@
 package org.example.da.skywarsv1.playerSetting;
 
 import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Location;
 
 import java.util.ArrayList;

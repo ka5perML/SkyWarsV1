@@ -2,12 +2,6 @@ package org.example.da.skywarsv1.gameStation.state;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
-import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -18,8 +12,6 @@ import org.example.da.skywarsv1.mapSetting.GameTimer;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static org.bukkit.Bukkit.getServer;
 
 public class StateGame {
     private JavaPlugin plugin;
