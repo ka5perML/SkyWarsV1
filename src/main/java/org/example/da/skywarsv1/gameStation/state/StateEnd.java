@@ -3,21 +3,21 @@ package org.example.da.skywarsv1.gameStation.state;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.example.da.skywarsv1.gameStation.GameStateManager;
 import org.example.da.skywarsv1.mapSetting.BlockChange;
 import org.example.da.skywarsv1.playerSetting.BlockBreakerForPlayer;
+import org.example.da.skywarsv1.playerSetting.PlayerKillCounter;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class StateEnd {
-    private GameStateManager gameStateManager;
     private BlockChange blockChange;
     private BlockBreakerForPlayer breaker;
-    public StateEnd(GameStateManager gameStateManager, BlockChange blockChange, BlockBreakerForPlayer breaker){
-        this.gameStateManager = gameStateManager;
+    private PlayerKillCounter playerKillCounter;
+    public StateEnd(BlockChange blockChange, BlockBreakerForPlayer breaker, PlayerKillCounter playerKillCounter){
         this.blockChange = blockChange;
         this.breaker = breaker;
+        this.playerKillCounter = playerKillCounter;
     }
     public void endGame(){
         messageWinner();

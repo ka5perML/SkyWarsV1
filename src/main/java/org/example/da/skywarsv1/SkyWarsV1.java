@@ -9,25 +9,23 @@ import org.example.da.skywarsv1.gameStation.GameStateManager;
 import org.example.da.skywarsv1.mapSetting.MapLoad;
 import org.example.da.skywarsv1.mapSetting.PlayerTeleport;
 import org.example.da.skywarsv1.playerSetting.BlockBreakerForPlayer;
+import org.example.da.skywarsv1.playerSetting.PlayerKillCounter;
 import org.example.da.skywarsv1.playerSetting.PlayerListener;
 import org.example.da.skywarsv1.playerSetting.PlayerSetting;
 
 public final class SkyWarsV1 extends JavaPlugin {
-    private GameStateManager stageManager;
-    private MapLoad mapLoad;
-    private PlayerTeleport teleport;
-    private PlayerSetting playerSetting;
-    private BlockBreakerForPlayer breaker;
+    private PlayerKillCounter playerKillCounter;
     @Override
     public void onEnable() {
-        this.breaker = new BlockBreakerForPlayer();
-        this.mapLoad = new MapLoad(this);
-        this.teleport = new PlayerTeleport(mapLoad);
-        this.playerSetting = new PlayerSetting(this);
-        this.stageManager = new GameStateManager(this, mapLoad, teleport, playerSetting,breaker);
+        BlockBreakerForPlayer breaker = new BlockBreakerForPlayer();
+        MapLoad mapLoad = new MapLoad(this);
+        PlayerTeleport teleport = new PlayerTeleport(mapLoad);
+        PlayerSetting playerSetting = new PlayerSetting(this);
+        GameStateManager stageManager = new GameStateManager(this, mapLoad, teleport, playerSetting, breaker, playerKillCounter);
+        this.playerKillCounter = new PlayerKillCounter();
 
         registerListener(
-                new GameStateListener(stageManager, mapLoad, teleport),
+                new GameStateListener(stageManager, mapLoad, teleport,playerKillCounter),
                 new PlayerListener(stageManager, playerSetting, breaker)
         );
 

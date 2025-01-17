@@ -15,11 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StateLobby {
-    private JavaPlugin plugin;
-    private GameStateManager gameStateManager;
-    private MapLoad mapLoad;
-    private BlockChange blockChange;
-    private PlayerSetting playerSetting;
+    private final JavaPlugin plugin;
+    private final GameStateManager gameStateManager;
+    private final MapLoad mapLoad;
+    private final BlockChange blockChange;
+    private final PlayerSetting playerSetting;
     public StateLobby(JavaPlugin plugin, GameStateManager gameStateManager, MapLoad mapLoad, PlayerSetting playerSetting){
         this.plugin = plugin;
         this.mapLoad = mapLoad;
@@ -29,9 +29,7 @@ public class StateLobby {
     }
     public void checkPlayerInGame(){
         if(gameStateManager.getGameState() != GameState.LOBBY) return;
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            playerSetting.playerSetting(player);
-        });
+        Bukkit.getOnlinePlayers().forEach(playerSetting::playerSetting);
         blockChange.changeBlock(mapLoad.getLocationPlayerList().toArray(new Location[0]));
         teleportInLocationSpawn();
         new BukkitRunnable() {

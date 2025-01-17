@@ -14,10 +14,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class StateGame {
-    private JavaPlugin plugin;
-    private GameStateManager gameStateManager;
-    private BlockChange blockChange;
-    private GameTimer gameTimer;
+    private final JavaPlugin plugin;
+    private final GameStateManager gameStateManager;
+    private final BlockChange blockChange;
+    private final GameTimer gameTimer;
     public StateGame(JavaPlugin plugin, GameStateManager gameStateManager){
         this.plugin = plugin;
         this.gameStateManager = gameStateManager;
