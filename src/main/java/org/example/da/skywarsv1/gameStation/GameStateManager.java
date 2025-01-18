@@ -19,7 +19,7 @@ public class GameStateManager {
     @Getter
     private final int maxPlayer = 12;
     @Getter
-    private final int minPlayer = 2;
+    private final int minPlayer = 6;
     private final StateLobby stateLobby;
     private final StateStart stateStart;
     private final StateGame stateGame;
