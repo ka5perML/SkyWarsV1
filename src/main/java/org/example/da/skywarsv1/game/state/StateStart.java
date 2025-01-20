@@ -1,13 +1,14 @@
-package org.example.da.skywarsv1.gameStation.state;
+package org.example.da.skywarsv1.game.state;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.example.da.skywarsv1.gameStation.GameState;
-import org.example.da.skywarsv1.gameStation.GameStateManager;
-import org.example.da.skywarsv1.mapSetting.MapLoad;
-import org.example.da.skywarsv1.mapSetting.PlayerTeleport;
+import org.bukkit.scheduler.BukkitTask;
+import org.example.da.skywarsv1.game.GameState;
+import org.example.da.skywarsv1.game.GameStateManager;
+import org.example.da.skywarsv1.map.loader.MapLoad;
+import org.example.da.skywarsv1.map.PlayerTeleport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,20 +18,23 @@ public class StateStart {
     private final JavaPlugin plugin;
     private final GameStateManager gameStateManager;
     private final PlayerTeleport teleport;
-    private int timer = 20;
+    private int timer;
     public StateStart(JavaPlugin plugin,GameStateManager gameStateManager, MapLoad mapLoader, PlayerTeleport teleport){
         this.plugin = plugin;
         this.gameStateManager = gameStateManager;
         this.teleport = teleport;
     }
+
     public void startGame(){
         Bukkit.getOnlinePlayers().forEach( player -> {
             teleport.teleportCleanLocation(player);
         });
         gameStateStart();
     }
+
     private void gameStateStart(){
         if(gameStateManager.getGameState() != GameState.START) return;
+        timer = 20;
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -51,6 +55,7 @@ public class StateStart {
             }
         }.runTaskTimer(plugin,0,20);
     }
+
     private void kickRandomPlayer(){
         List<Player> onlinePlayers = new ArrayList<>(Bukkit.getOnlinePlayers());
 

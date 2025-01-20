@@ -1,4 +1,4 @@
-package org.example.da.skywarsv1.playerSetting;
+package org.example.da.skywarsv1.player;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

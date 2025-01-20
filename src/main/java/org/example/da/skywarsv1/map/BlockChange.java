@@ -1,4 +1,4 @@
-package org.example.da.skywarsv1.mapSetting;
+package org.example.da.skywarsv1.map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -15,10 +15,12 @@ public class BlockChange {
             block.setType(Material.GLASS);
         }
     }
+
     public void replaceBlockInAir(Location location){
         Block block = getServer().getWorlds().get(0).getBlockAt(location);
         block.setType(Material.AIR);
     }
+
     public void breakBlockUnderPlayer() {
         Bukkit.getOnlinePlayers().forEach(player -> {
             Location playerLoc = player.getLocation();

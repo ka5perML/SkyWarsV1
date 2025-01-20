@@ -1,4 +1,4 @@
-package org.example.da.skywarsv1.gameStation;
+package org.example.da.skywarsv1.game;
 
 public enum GameState {
     LOBBY,

@@ -1,4 +1,4 @@
-package org.example.da.skywarsv1.playerSetting;
+package org.example.da.skywarsv1.player;
 
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
@@ -9,10 +9,12 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerSetting {
     private JavaPlugin plugin;
+
     public PlayerSetting(JavaPlugin plugin){
         this.plugin = plugin;
         playerStats();
     }
+
     @SneakyThrows
     private void playerStats(){
         new BukkitRunnable(){
@@ -29,9 +31,24 @@ public class PlayerSetting {
         }.runTaskTimer(plugin,0,20);
     }
 
-    public void playerSetting(Player player){
+    public void gameDontStart(Player player){
+        player.setAllowFlight(false);
+        player.setFlying(false);
         player.getInventory().clear();
         player.setGameMode(GameMode.SURVIVAL);
+        updatePlayerVisibility(player);
         player.setHealth(20.0);
+    }
+
+    public void gameStart(Player player){
+        player.getInventory().clear();
+        player.setGameMode(GameMode.SPECTATOR);
+    }
+
+    private void updatePlayerVisibility(Player player) {
+        Bukkit.getOnlinePlayers().forEach(onlinePlayer -> {
+            onlinePlayer.hidePlayer(player);
+            onlinePlayer.showPlayer(player);
+        });
     }
 }

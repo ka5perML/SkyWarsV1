@@ -1,4 +1,4 @@
-package org.example.da.skywarsv1.mapSetting;
+package org.example.da.skywarsv1.map.loader;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -33,6 +33,7 @@ public class MapLoad {
         this.config = YamlConfiguration.loadConfiguration(dataFile);
         loadMap();
     }
+
     @SneakyThrows
     private void checkFolder() {
         if (!dataFile.exists()) {
@@ -42,6 +43,7 @@ public class MapLoad {
         }
         Bukkit.getLogger().info("Config find: " + dataFile.getAbsolutePath());
     }
+
     private void loadMap(){
         MapName mapName = randomMap();
         this.locationPlayerList = loadLocation(mapName);
@@ -49,11 +51,13 @@ public class MapLoad {
         this.locationMidChestList = loadChestMidCoordinats(mapName);
         this.locationSpawn = loadSpawn(mapName);
     }
+
     private MapName randomMap(){
         MapName[] values = MapName.values();
         int random = ThreadLocalRandom.current().nextInt(values.length);
         return values[random];
     }
+
     @SneakyThrows
     private List<Location> loadLocation(MapName mapName) {
         String path = "map." + mapName + ".coordinates";
@@ -75,6 +79,7 @@ public class MapLoad {
                                 ))
                 .collect(Collectors.toList());
     }
+
     @SneakyThrows
     private List<Location> loadSpawn(MapName mapName) {
         String path = "map." + mapName + ".spawn";
@@ -96,6 +101,7 @@ public class MapLoad {
                         ))
                 .collect(Collectors.toList());
     }
+
     @SneakyThrows
     private List<Location> loadChestIslandCoordinats(MapName mapName) {
         String path = "map." + mapName + ".coordinatesIslandChest";
@@ -115,6 +121,7 @@ public class MapLoad {
                         ))
                 .collect(Collectors.toList());
     }
+
     @SneakyThrows
     private List<Location> loadChestMidCoordinats(MapName mapName) {
         String path = "map." + mapName + ".coordinatesMidChest";

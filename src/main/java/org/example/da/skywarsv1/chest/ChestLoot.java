@@ -1,4 +1,4 @@
-package org.example.da.skywarsv1.chestManager;
+package org.example.da.skywarsv1.chest;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;

@@ -1,4 +1,4 @@
-package org.example.da.skywarsv1.chestManager;
+package org.example.da.skywarsv1.chest;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -7,14 +7,18 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.example.da.skywarsv1.mapSetting.MapLoad;
+import org.example.da.skywarsv1.game.GameState;
+import org.example.da.skywarsv1.game.GameStateManager;
+import org.example.da.skywarsv1.map.loader.MapLoad;
 
 public class ChestManager {
     private ChestLoot chestLoot;
-    private JavaPlugin plugin;
-    private MapLoad mapLoad;
-    public ChestManager(JavaPlugin plugin, MapLoad mapLoad){
+    private final JavaPlugin plugin;
+    private final MapLoad mapLoad;
+    private final GameStateManager gameStateManager;
+    public ChestManager(JavaPlugin plugin, MapLoad mapLoad, GameStateManager gameStateManager){
         this.mapLoad = mapLoad;
+        this.gameStateManager = gameStateManager;
         chestLoot = new ChestLoot();
         this.plugin = plugin;
     }
@@ -22,6 +26,10 @@ public class ChestManager {
         new BukkitRunnable(){
             @Override
             public void run() {
+                if(gameStateManager.getGameState() != GameState.GAME){
+                    this.cancel();
+                    return;
+                }
                 chest();
                 Bukkit.broadcastMessage("Chest update");
             }

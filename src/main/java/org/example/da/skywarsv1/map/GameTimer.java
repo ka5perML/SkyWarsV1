@@ -1,4 +1,4 @@
-package org.example.da.skywarsv1.mapSetting;
+package org.example.da.skywarsv1.map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
@@ -6,8 +6,8 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.example.da.skywarsv1.gameStation.GameState;
-import org.example.da.skywarsv1.gameStation.GameStateManager;
+import org.example.da.skywarsv1.game.GameState;
+import org.example.da.skywarsv1.game.GameStateManager;
 
 public class GameTimer {
     private BossBar bossBar;
@@ -20,11 +20,11 @@ public class GameTimer {
         this.gameStateManager = gameStateManager;
         this.bossBar = Bukkit.createBossBar("Таймер: " + timer +" секунд",BarColor.GREEN, BarStyle.SOLID);
     }
+
     public void startBossBarTimer() {
         Bukkit.getOnlinePlayers().forEach(bossBar::addPlayer);
-
         new BukkitRunnable() {
-
+            int gameTimer = timer;
             @Override
             public void run() {
                 if(timer == 0){
@@ -38,9 +38,9 @@ public class GameTimer {
                     stopTimer();
                     return;
                 }
-                bossBar.setTitle("Таймер: " + timer + " секунд");
-                bossBar.setProgress(timer / 180.0);
-                timer--;
+                bossBar.setTitle("Таймер: " + gameTimer + " секунд");
+                bossBar.setProgress((double) gameTimer / timer);
+                gameTimer--;
             }
         }.runTaskTimer(plugin, 0, 20);
     }
